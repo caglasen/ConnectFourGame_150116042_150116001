@@ -87,11 +87,11 @@ class Game(object):
         #a = [[0 for x in range(n)] for x in range(m)]
 
         self.board = [[' ', ' ', ' ', ' ', ' ', ' ',' '],
-                 [' ', ' ', ' ', ' ', ' ', ' ',' '],
-                 [' ', ' ', ' ', ' ', ' ', ' ',' '],
-                 [' ', ' ', ' ', ' ', ' ', ' ',' '],
-                 [' ', ' ', ' ', ' ', ' ', ' ',' '],
-                 [' ', ' ', ' ', ' ', ' ', ' ',' ']]
+                     [' ', ' ', ' ', ' ', ' ', ' ',' '],
+                     [' ', ' ', ' ', ' ', ' ', ' ',' '],
+                     [' ', ' ', ' ', ' ', ' ', ' ',' '],
+                     [' ', ' ', ' ', ' ', ' ', ' ',' '],
+                     [' ', ' ', ' ', ' ', ' ', ' ',' ']]
 
     # Check if there exist a horizontal four starting from x,y
     def checkHorizontalFour(self, x, y):
@@ -100,8 +100,8 @@ class Game(object):
         count = 0
 
         character = self.board[x][y]
-        for i in range(x,self.n):
-            if(character == self.board[x][y]):
+        for i in range(y,self.n):
+            if(character == self.board[x][i]):
                 count+=1
             else:
                 break
@@ -120,8 +120,8 @@ class Game(object):
         count = 0
 
         character = self.board[x][y]
-        for i in range(y, self.m):
-            if (character == self.board[x][y]):
+        for i in range(x, self.m):
+            if (character == self.board[i][y]):
                 count += 1
             else:
                 break
@@ -143,6 +143,7 @@ class Game(object):
         winCount = 0
         #check x=y diagonal
         character = self.board[x][y]
+        diagDegree = -1
 
         j = y
         for i in range(x, self.m):
@@ -151,6 +152,9 @@ class Game(object):
                     count += 1
                 else:
                     break
+            else:
+                continue
+            break
 
         if count >= 4:
             existsDiagFour=True
@@ -181,6 +185,7 @@ class Game(object):
             else:
                 self.winner = self.players[1]
 
+
         if(winCount==2):
             diagDegree=45135 # diagonel four both exists in 45 and 135 degrees
 
@@ -196,7 +201,7 @@ class Game(object):
 
     def showState(self):
         print("_____________________________")
-        for i in range(len(self.board)):
+        for i in range(len(self.board)-1, -1, -1):
             #print("|\t", end="")
             for j in range(len(self.board[i])):
                 print("| " +self.board[i][j], end=" ")
@@ -241,7 +246,7 @@ class Game(object):
             print("Move is not valid. Error: Column is full")
             return
 
-        self.board[cellIndex][playersColumnChoice] = currentPlayer.letter
+        self.board[cellIndex][playersColumnChoice] = currentPlayer.letter # This is where we put the letter to board
 
         # Swap playerTurn with the other player for the next round
         if(self.playerTurn == self.players[0]):
@@ -255,7 +260,11 @@ class Game(object):
         for i in range(self.m):
             for j in range(self.n):
                 if(self.board[i][j]!=' '):
-                    if(self.checkVerticalFour(i,j) or self.checkHorizontalFour(i,j) or self.checkDiagonalFour()):
+                    a = self.checkVerticalFour(i,j)
+                    b = self.checkHorizontalFour(i,j)
+                    c,d = self.checkDiagonalFour(i,j)
+
+                    if(a or b or c):
                         self.gameFinished=True
                         foursRowIndex = i
                         foursColumnIndex = j
@@ -363,6 +372,7 @@ def main():
 
     while not gameFinished:
         game.makeAMove()
+        gameFinished=game.gameFinished
 
 
 
