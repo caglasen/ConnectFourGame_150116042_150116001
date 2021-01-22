@@ -236,6 +236,7 @@ class Game(object):
 
         cellIndex = self.findTheEmptyCellInAColumn(playersColumnChoice)
 
+
         if(cellIndex == -1):
             print("Move is not valid. Error: Column is full")
             return
