@@ -269,17 +269,26 @@ class Game(object):
                         foursRowIndex = i
                         foursColumnIndex = j
                         break
+                    else:
+                        continue
+                    break
+                else:
+                    continue
+                break
+            else:
+                continue
+            break
 
         self.round+=1
 
         if(foursRowIndex ==-1 and foursColumnIndex==-1):
             self.showState()
         else:
-            self.showTheWinnerFourState(foursRowIndex, foursColumnIndex)
+            self.showTheWinnerFourState(foursRowIndex, foursColumnIndex, a, b, c)
 
         return foursRowIndex, foursColumnIndex
 
-    def showTheWinnerFourState(self, row, col):
+    def showTheWinnerFourState(self, row, col, vert, horiz, diagon):
 
         letter = self.board[row][col]
 
