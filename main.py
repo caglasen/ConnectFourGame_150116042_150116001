@@ -25,6 +25,7 @@ class Game(object):
     gameWinner= None
     gameFinished= False
     playerTurn = None
+    round = 0
 
     #board dimensions
     m = 6
@@ -85,7 +86,7 @@ class Game(object):
 
         #a = [[0 for x in range(n)] for x in range(m)]
 
-        board = [[' ', ' ', ' ', ' ', ' ', ' ',' '],
+        self.board = [[' ', ' ', ' ', ' ', ' ', ' ',' '],
                  [' ', ' ', ' ', ' ', ' ', ' ',' '],
                  [' ', ' ', ' ', ' ', ' ', ' ',' '],
                  [' ', ' ', ' ', ' ', ' ', ' ',' '],
@@ -129,7 +130,7 @@ class Game(object):
             if(character == self.players[0].letter):
                 self.gameWinner=self.players[0]
             else:
-                self.gameWinner=self.gameWinner[1]
+                self.gameWinner=self.players[1]
 
 
         return existsVertFour
@@ -185,11 +186,13 @@ class Game(object):
 
         return existsDiagFour, diagDegree
 
+    """
     def checkFours(self):
 
         self.checkHorizontalFour()
         self.checkVerticalFour()
         self.checkDiagonalFour()
+    """
 
     def showState(self):
         print("_____________________________")
@@ -207,6 +210,117 @@ class Game(object):
             self.board.append([])
             for j in range(7):
                 self.board[i].append('1')
+
+    def makeAMove(self):
+        currentPlayer = self.playerTurn
+
+        if(self.checkGameIsOverWithDrawn() == True):
+            print("Move is not valid. Error: Game ended with a drawn")
+            return
+
+        # If the player is a Human
+        if(isinstance(currentPlayer, HumanPlayer)):
+            playersColumnChoice = int(input("Enter a column number to make move: ")) - 1
+            if(not (playersColumnChoice>=0 and playersColumnChoice<=6)):
+                print("Move is not valid. Error: Choice is not valid")
+                playersColumnChoice=-1
+                while playersColumnChoice== -1:
+                    playersColumnChoice = int(input("Enter a column number to make move: ")) - 1
+                    if (playersColumnChoice >= 0 and playersColumnChoice <= 6):
+                        break
+
+        # If the player is an AI
+        if(isinstance(currentPlayer, AIPlayer)):
+            print()
+            #BURAYA MINIMAXLI Bİ ŞEYLER GELECEK====================
+
+        cellIndex = self.findTheEmptyCellInAColumn(playersColumnChoice)
+
+        if(cellIndex == -1):
+            print("Move is not valid. Error: Column is full")
+            return
+
+        self.board[cellIndex][playersColumnChoice] = currentPlayer.letter
+
+        # Swap playerTurn with the other player for the next round
+        if(self.playerTurn == self.players[0]):
+            self.playerTurn = self.players[1]
+        else:
+            self.playerTurn = self.players[0]
+
+        foursRowIndex = -1
+        foursColumnIndex = -1
+
+        for i in range(self.m):
+            for j in range(self.n):
+                if(self.board[i][j]!=' '):
+                    if(self.checkVerticalFour(i,j) or self.checkHorizontalFour(i,j) or self.checkDiagonalFour()):
+                        self.gameFinished=True
+                        foursRowIndex = i
+                        foursColumnIndex = j
+                        break
+
+        self.round+=1
+
+        if(foursRowIndex ==-1 and foursColumnIndex==-1):
+            self.showState()
+        else:
+            self.showTheWinnerFourState(foursRowIndex, foursColumnIndex)
+
+        return foursRowIndex, foursColumnIndex
+
+    def showTheWinnerFourState(self, row, col):
+
+        letter = self.board[row][col]
+
+        foursCoordinates = [['',''],['',''],['',''],['','']]
+
+        foursCoordinates[0][0] = row
+        foursCoordinates[0][1] = col
+
+        if(self.checkVerticalFour(row, col)):
+            for i in range(1, 4):
+                foursCoordinates[i][0] = row+1
+                foursCoordinates[i][1] = col
+                row+=1
+
+        elif(self.checkHorizontalFour(row, col)):
+            for i in range(1, 4):
+                foursCoordinates[i][0] = row
+                foursCoordinates[i][1] = col+1
+                col+=1
+
+        elif(self.checkDiagonalFour(row, col)):
+            for i in range(1, 4):
+                foursCoordinates[i][0] = row+1
+                foursCoordinates[i][1] = col+1
+                row+=1
+                col+=1
+
+        for i in range(6):
+            for j in range(7):
+                for k in range(4):
+                        if(i!=foursCoordinates[k][0] and j!=foursCoordinates[k][1]):
+                            self.board[i][j]=' '
+        self.showState()
+
+        return
+
+
+
+    # If there is a drawn(if the board is already full) return true
+    def checkGameIsOverWithDrawn(self):
+        if(self.round > self.m * self.n):
+            return True
+        else:
+            return False
+
+    def findTheEmptyCellInAColumn(self, colNumber):
+        for i in range(6):
+            if self.board[i][colNumber] == ' ':
+                return i
+        return -1;
+
 
 class HumanPlayer(object):
 
@@ -238,8 +352,17 @@ class AIPlayer(object):
 def main():
     game = Game()
     game.initializeBoard()
-    game.arbitrary()
+    #game.arbitrary()
     game.showState()
+
+    player1=game.players[0]
+    player2=game.players[1]
+
+    gameFinished=False
+
+    while not gameFinished:
+        game.makeAMove()
+
 
 
 if __name__ == '__main__':
