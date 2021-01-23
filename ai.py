@@ -11,9 +11,10 @@ class AI:
         possibleMoves = self.get_possible_moves(state)
 
         if depth == 0 or len(possibleMoves) == 0:
-            pass
+            return self.h1(state)
         if maximum:
-            pass
+            for move in possibleMoves:
+                self.minimax(False, depth-1, move)
 
     def get_possible_moves(self, state):  # this function returns the possible
         # moves of the given state as a list
@@ -34,5 +35,5 @@ class AI:
                 temp[i][column] = color
                 return temp
 
-    def h1(self):
+    def h1(self, state):
         return 0
