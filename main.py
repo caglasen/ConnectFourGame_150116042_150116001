@@ -288,6 +288,7 @@ class Game(object):
 
     def showTheWinnerFourState(self, row, col, vert, horiz, diagon):
 
+
         letter = self.board[row][col]
 
         foursCoordinates = [['', ''], ['', ''], ['', ''], ['', '']]
@@ -320,7 +321,7 @@ class Game(object):
                     if (i != foursCoordinates[k][0] and j != foursCoordinates[k][1]):
                         self.board[i][j] = ' '
         self.showState()
-
+        print("The winner is ", self.gameWinner.name, " with the letter ", self.gameWinner.letter)
         return
 
     # If there is a drawn(if the board is already full) return true
