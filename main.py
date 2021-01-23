@@ -5,6 +5,7 @@
 
 import time
 
+
 def print_hi(name):
     # Use a breakpoint in the code line below to debug your script.
 
@@ -15,19 +16,19 @@ def print_hi(name):
 if __name__ == '__main__':
     print_hi('PyCharm')
 
+
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/
 
 class Game(object):
-
     players = [None, None];
     playerNames = [None, None];
     board = None
-    gameWinner= None
-    gameFinished= False
+    gameWinner = None
+    gameFinished = False
     playerTurn = None
     round = 0
 
-    #board dimensions
+    # board dimensions
     m = 6
     n = 7
 
@@ -36,26 +37,26 @@ class Game(object):
         print("Will you play (1) Human to Human, (2) Human to Computer or, (3) Computer to Computer?")
         gameTypeChoice = int(input("Please type 1, 2 or 3: "))
 
-        if(gameTypeChoice == 1 ):
+        if (gameTypeChoice == 1):
             self.playerNames[0] = str(input("What is the name of player 1?"))
             self.playerNames[1] = str(input("What is the name of player 2?"))
             self.players[0] = HumanPlayer(self.playerNames[0], 'x')
             self.players[1] = HumanPlayer(self.playerNames[1], 'o')
-        elif(gameTypeChoice == 2):
+        elif (gameTypeChoice == 2):
             difficulty = int(input("Please enter difficulty level. Type 1 , 2 or 3: "))
             if (difficulty != 1 or difficulty != 3 or difficulty != 3):
                 difficulty = int(input("Please type a valid difficulty level. Type 1 , 2 or 3: "))
             self.players[0] = str(input("What is the name of human player?"))
             self.players[1] = "AI Player"
             humanStartsFirst = str(input("Will human start first? Type Y or N: "))
-            if(humanStartsFirst == "Y"):
+            if (humanStartsFirst == "Y"):
                 self.players[0] = HumanPlayer(self.playerNames[0], 'x')
                 self.players[1] = AIPlayer(self.playerNames[1], 'o', difficulty)
             else:
                 self.players[0] = AIPlayer(self.playerNames[0], 'x', difficulty)
                 self.players[1] = HumanPlayer(self.playerNames[1], 'o')
 
-        elif(gameTypeChoice == 3):
+        elif (gameTypeChoice == 3):
             self.players[0] = "AI Player 1"
             self.players[1] = "AI Player 2"
             difficulty = int(input("Please enter a iq level for the first AI. Type 1 , 2 or 3: "))
@@ -80,33 +81,34 @@ class Game(object):
         print("1")
         time.sleep(1)
         """
+
     def initializeBoard(self):
 
         self.playerTurn = self.players[0]
 
-        #a = [[0 for x in range(n)] for x in range(m)]
+        # a = [[0 for x in range(n)] for x in range(m)]
 
-        self.board = [[' ', ' ', ' ', ' ', ' ', ' ',' '],
-                     [' ', ' ', ' ', ' ', ' ', ' ',' '],
-                     [' ', ' ', ' ', ' ', ' ', ' ',' '],
-                     [' ', ' ', ' ', ' ', ' ', ' ',' '],
-                     [' ', ' ', ' ', ' ', ' ', ' ',' '],
-                     [' ', ' ', ' ', ' ', ' ', ' ',' ']]
+        self.board = [[' ', ' ', ' ', ' ', ' ', ' ', ' '],
+                      [' ', ' ', ' ', ' ', ' ', ' ', ' '],
+                      [' ', ' ', ' ', ' ', ' ', ' ', ' '],
+                      [' ', ' ', ' ', ' ', ' ', ' ', ' '],
+                      [' ', ' ', ' ', ' ', ' ', ' ', ' '],
+                      [' ', ' ', ' ', ' ', ' ', ' ', ' ']]
 
     # Check if there exist a horizontal four starting from x,y
     def checkHorizontalFour(self, x, y):
 
-        existsHorizFour=False
+        existsHorizFour = False
         count = 0
 
         character = self.board[x][y]
-        for i in range(y,self.n):
-            if(character == self.board[x][i]):
-                count+=1
+        for i in range(y, self.n):
+            if (character == self.board[x][i]):
+                count += 1
             else:
                 break
-        if(count>=4):
-            existsHorizFour=True
+        if (count >= 4):
+            existsHorizFour = True
             if (character == self.players[0].letter):
                 self.gameWinner = self.players[0]
             else:
@@ -127,11 +129,10 @@ class Game(object):
                 break
         if (count >= 4):
             existsVertFour = True
-            if(character == self.players[0].letter):
-                self.gameWinner=self.players[0]
+            if (character == self.players[0].letter):
+                self.gameWinner = self.players[0]
             else:
-                self.gameWinner=self.players[1]
-
+                self.gameWinner = self.players[1]
 
         return existsVertFour
 
@@ -141,13 +142,13 @@ class Game(object):
         existsDiagFour = False
         count = 0
         winCount = 0
-        #check x=y diagonal
+        # check x=y diagonal
         character = self.board[x][y]
         diagDegree = -1
 
         j = y
         for i in range(x, self.m):
-            for j in range(y,self.n):
+            for j in range(y, self.n):
                 if (self.board[i][j] == character):
                     count += 1
                 else:
@@ -157,15 +158,14 @@ class Game(object):
             break
 
         if count >= 4:
-            existsDiagFour=True
+            existsDiagFour = True
             winCount += 1
-            diagDegree = 45 # indicating x=y has 45 degrees angle
+            diagDegree = 45  # indicating x=y has 45 degrees angle
             if self.players[0].letter == self.board[x][y]:
                 self.winner = self.players[0]
             else:
                 self.winner = self.players[1]
-                
-                
+
         # check x=-y diagonal
         count = 0
         j = y
@@ -177,7 +177,7 @@ class Game(object):
                     break
 
         if count >= 4:
-            existsDiagFour=True
+            existsDiagFour = True
             winCount += 1
             diagDegree = 135  # indicating x=-y has 135 degrees angle
             if self.players[0].letter == self.board[x][y]:
@@ -185,9 +185,8 @@ class Game(object):
             else:
                 self.winner = self.players[1]
 
-
-        if(winCount==2):
-            diagDegree=45135 # diagonel four both exists in 45 and 135 degrees
+        if (winCount == 2):
+            diagDegree = 45135  # diagonel four both exists in 45 and 135 degrees
 
         return existsDiagFour, diagDegree
 
@@ -201,16 +200,16 @@ class Game(object):
 
     def showState(self):
         print("_____________________________")
-        for i in range(len(self.board)-1, -1, -1):
-            #print("|\t", end="")
+        for i in range(len(self.board) - 1, -1, -1):
+            # print("|\t", end="")
             for j in range(len(self.board[i])):
-                print("| " +self.board[i][j], end=" ")
+                print("| " + self.board[i][j], end=" ")
             print("|")
         print("-----------------------------")
         print("  1   2   3   4   5   6   7")
 
     def arbitrary(self):
-        self.board=[]
+        self.board = []
         for i in range(6):
             self.board.append([])
             for j in range(7):
@@ -219,37 +218,36 @@ class Game(object):
     def makeAMove(self):
         currentPlayer = self.playerTurn
 
-        if(self.checkGameIsOverWithDrawn() == True):
+        if (self.checkGameIsOverWithDrawn() == True):
             print("Move is not valid. Error: Game ended with a drawn")
             return
 
         # If the player is a Human
-        if(isinstance(currentPlayer, HumanPlayer)):
+        if (isinstance(currentPlayer, HumanPlayer)):
             playersColumnChoice = int(input("Enter a column number to make move: ")) - 1
-            if(not (playersColumnChoice>=0 and playersColumnChoice<=6)):
+            if (not (playersColumnChoice >= 0 and playersColumnChoice <= 6)):
                 print("Move is not valid. Error: Choice is not valid")
-                playersColumnChoice=-1
-                while playersColumnChoice== -1:
+                playersColumnChoice = -1
+                while playersColumnChoice == -1:
                     playersColumnChoice = int(input("Enter a column number to make move: ")) - 1
                     if (playersColumnChoice >= 0 and playersColumnChoice <= 6):
                         break
 
         # If the player is an AI
-        if(isinstance(currentPlayer, AIPlayer)):
+        if (isinstance(currentPlayer, AIPlayer)):
             print()
-            #BURAYA MINIMAXLI Bİ ŞEYLER GELECEK====================
+            # BURAYA MINIMAXLI Bİ ŞEYLER GELECEK====================
 
         cellIndex = self.findTheEmptyCellInAColumn(playersColumnChoice)
 
-
-        if(cellIndex == -1):
+        if (cellIndex == -1):
             print("Move is not valid. Error: Column is full")
             return
 
-        self.board[cellIndex][playersColumnChoice] = currentPlayer.letter # This is where we put the letter to board
+        self.board[cellIndex][playersColumnChoice] = currentPlayer.letter  # This is where we put the letter to board
 
         # Swap playerTurn with the other player for the next round
-        if(self.playerTurn == self.players[0]):
+        if (self.playerTurn == self.players[0]):
             self.playerTurn = self.players[1]
         else:
             self.playerTurn = self.players[0]
@@ -259,13 +257,13 @@ class Game(object):
 
         for i in range(self.m):
             for j in range(self.n):
-                if(self.board[i][j]!=' '):
-                    a = self.checkVerticalFour(i,j)
-                    b = self.checkHorizontalFour(i,j)
-                    c,d = self.checkDiagonalFour(i,j)
+                if (self.board[i][j] != ' '):
+                    a = self.checkVerticalFour(i, j)
+                    b = self.checkHorizontalFour(i, j)
+                    c, d = self.checkDiagonalFour(i, j)
 
-                    if(a or b or c):
-                        self.gameFinished=True
+                    if (a or b or c):
+                        self.gameFinished = True
                         foursRowIndex = i
                         foursColumnIndex = j
                         break
@@ -279,9 +277,9 @@ class Game(object):
                 continue
             break
 
-        self.round+=1
+        self.round += 1
 
-        if(foursRowIndex ==-1 and foursColumnIndex==-1):
+        if (foursRowIndex == -1 and foursColumnIndex == -1):
             self.showState()
         else:
             self.showTheWinnerFourState(foursRowIndex, foursColumnIndex, a, b, c)
@@ -292,44 +290,42 @@ class Game(object):
 
         letter = self.board[row][col]
 
-        foursCoordinates = [['',''],['',''],['',''],['','']]
+        foursCoordinates = [['', ''], ['', ''], ['', ''], ['', '']]
 
         foursCoordinates[0][0] = row
         foursCoordinates[0][1] = col
 
-        if(self.checkVerticalFour(row, col)):
+        if (self.checkVerticalFour(row, col)):
             for i in range(1, 4):
-                foursCoordinates[i][0] = row+1
+                foursCoordinates[i][0] = row + 1
                 foursCoordinates[i][1] = col
-                row+=1
+                row += 1
 
-        elif(self.checkHorizontalFour(row, col)):
+        elif (self.checkHorizontalFour(row, col)):
             for i in range(1, 4):
                 foursCoordinates[i][0] = row
-                foursCoordinates[i][1] = col+1
-                col+=1
+                foursCoordinates[i][1] = col + 1
+                col += 1
 
-        elif(self.checkDiagonalFour(row, col)):
+        elif (self.checkDiagonalFour(row, col)):
             for i in range(1, 4):
-                foursCoordinates[i][0] = row+1
-                foursCoordinates[i][1] = col+1
-                row+=1
-                col+=1
+                foursCoordinates[i][0] = row + 1
+                foursCoordinates[i][1] = col + 1
+                row += 1
+                col += 1
 
         for i in range(6):
             for j in range(7):
                 for k in range(4):
-                        if(i!=foursCoordinates[k][0] and j!=foursCoordinates[k][1]):
-                            self.board[i][j]=' '
+                    if (i != foursCoordinates[k][0] and j != foursCoordinates[k][1]):
+                        self.board[i][j] = ' '
         self.showState()
 
         return
 
-
-
     # If there is a drawn(if the board is already full) return true
     def checkGameIsOverWithDrawn(self):
-        if(self.round > self.m * self.n):
+        if (self.round > self.m * self.n):
             return True
         else:
             return False
@@ -342,20 +338,17 @@ class Game(object):
 
 
 class HumanPlayer(object):
-
     type = None
     name = None
     letter = None
 
     def __init__(self, name, letter):
         self.name = name
-        self.type ="Human"
+        self.type = "Human"
         self.letter = letter
 
 
-
 class AIPlayer(object):
-
     type = None
     name = None
     letter = None
@@ -367,25 +360,21 @@ class AIPlayer(object):
         self.name = name
 
 
-
 def main():
     game = Game()
     game.initializeBoard()
-    #game.arbitrary()
+    # game.arbitrary()
     game.showState()
 
-    player1=game.players[0]
-    player2=game.players[1]
+    player1 = game.players[0]
+    player2 = game.players[1]
 
-    gameFinished=False
+    gameFinished = False
 
     while not gameFinished:
         game.makeAMove()
-        gameFinished=game.gameFinished
-
+        gameFinished = game.gameFinished
 
 
 if __name__ == '__main__':
     main()
-
-
