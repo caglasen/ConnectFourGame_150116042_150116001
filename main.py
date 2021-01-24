@@ -105,7 +105,7 @@ class Game(object):
             if character == self.players[0].letter:
                 self.gameWinner = self.players[0]
             else:
-                self.gameWinner = self.gameWinner[1]
+                self.gameWinner = self.players[1]
         return existsHorizFour
 
     # Check if there exist a vertical four starting from x,y
