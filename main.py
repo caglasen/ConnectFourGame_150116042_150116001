@@ -78,12 +78,15 @@ class Game(object):
 
         # a = [[0 for x in range(n)] for x in range(m)]
 
-        self.board = [[' ', ' ', ' ', ' ', ' ', ' ', ' '],
+        self.board = [['x', 'x', 'x', 'o', 'x', ' ', ' '],
+                      ['o', 'o', 'o', ' ', ' ', ' ', ' '],
+                      ['x', 'o', 'x', ' ', ' ', ' ', ' '],
                       [' ', ' ', ' ', ' ', ' ', ' ', ' '],
                       [' ', ' ', ' ', ' ', ' ', ' ', ' '],
-                      [' ', ' ', ' ', ' ', ' ', ' ', ' '],
-                      [' ', ' ', ' ', ' ', ' ', ' ', ' '],
-                      [' ', ' ', ' ', ' ', ' ', ' ', ' ']]
+                      [' ', ' ', ' ', ' ', ' ', ' ', ' ']
+
+
+                      ]
 
     # Check if there exist a horizontal four starting from x,y
     def checkHorizontalFour(self, x, y):
@@ -138,14 +141,16 @@ class Game(object):
 
         j = y
         for i in range(x, self.m):
-            for j in range(y, self.n):
+            #for j in range(y, self.n):
+            if(j<self.n):
                 if (self.board[i][j] == character):
                     count += 1
                 else:
                     break
+                j += 1
             else:
-                continue
-            break
+                break
+
 
         if count >= 4:
             existsDiagFour = True
@@ -160,14 +165,15 @@ class Game(object):
         count = 0
         j = y
         for i in range(x, -1, -1):
-            for j in range(y, self.n):
+            #for j in range(y, self.n):
+            if (j < self.n):
                 if (self.board[i][j] == character):
                     count += 1
                 else:
                     break
+                j += 1
             else:
-                continue
-            break
+                break
         if count >= 4:
             existsDiagFour = True
             winCount += 1
