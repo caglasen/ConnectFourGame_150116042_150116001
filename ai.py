@@ -1,5 +1,5 @@
 import math
-
+import random
 
 class AI:
     board = None
@@ -18,7 +18,7 @@ class AI:
     def get_best_move(self):
         children = self.get_possible_moves(self.board, self.player)
         best_val = -math.inf
-        best_move = children
+        best_move = children[random.randrange(len(children))]
 
         for child in children:
             child_val = self.minimax(False, self.depth - 1, child[0])
@@ -34,7 +34,7 @@ class AI:
             player = self.opponent
         possibleMoves = self.get_possible_moves(state, player)
 
-        if depth == 0 or len(possibleMoves) == 0:
+        if depth == 0 or len(possibleMoves) == 0 or self.is_game_over(state):
             return self.h1(state)
         if is_max_player:
             value = -math.inf
@@ -66,6 +66,12 @@ class AI:
                 temp[i][column] = player
                 return temp
 
+    def is_game_over(self, state):
+        if self.check_all(4, state, "o") > 0 or self.check_all(4, state, "x") > 0:
+            return True
+        else:
+            return False
+
     def check_all(self, check_number, state, player):
         count = 0
         # for each piece in the board...
@@ -86,8 +92,8 @@ class AI:
 
     def horizontal_check(self, x, y, state, check_number):
         consecutiveCount = 0
-        for i in range(x, 6):
-            if state[i][y].lower() == state[x][y].lower():
+        for i in range(y, 7):
+            if state[x][i].lower() == state[x][y].lower():
                 consecutiveCount += 1
             else:
                 break
@@ -149,8 +155,8 @@ class AI:
         value = 0
         value = value + self.check_all(3, state, self.player) * 999  # add 999 for player's 3 in a row
         value = value + self.check_all(2, state, self.player) * 9  # add 99 for player's 2 in a row
-        value = value - self.check_all(3, state, self.player) * 999  # subtract 9999 for opponent's 3 in a row
-        value = value - self.check_all(2, state, self.player) * 9
+        value = value - self.check_all(3, state, self.opponent) * 9999  # subtract 9999 for opponent's 3 in a row
+        value = value - self.check_all(2, state, self.opponent) * 9
         # subtract 99 for opponent's 2 in row
 
         if self.check_all(4, state, self.player):
