@@ -152,9 +152,9 @@ class Game(object):
             winCount += 1
             diagDegree = 45  # indicating x=y has 45 degrees angle
             if self.players[0].letter == self.board[x][y]:
-                self.winner = self.players[0]
+                self.gameWinner = self.players[0]
             else:
-                self.winner = self.players[1]
+                self.gameWinner = self.players[1]
 
         # check x=-y diagonal
         count = 0
@@ -171,9 +171,9 @@ class Game(object):
             winCount += 1
             diagDegree = 135  # indicating x=-y has 135 degrees angle
             if self.players[0].letter == self.board[x][y]:
-                self.winner = self.players[0]
+                self.gameWinner = self.players[0]
             else:
-                self.winner = self.players[1]
+                self.gameWinner = self.players[1]
 
         if winCount == 2:
             diagDegree = 45135  # diagonel four both exists in 45 and 135 degrees
