@@ -165,7 +165,9 @@ class Game(object):
                     count += 1
                 else:
                     break
-
+            else:
+                continue
+            break
         if count >= 4:
             existsDiagFour = True
             winCount += 1
