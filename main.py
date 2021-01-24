@@ -39,23 +39,23 @@ class Game(object):
             self.players[0] = str(input("What is the name of human player?"))
             self.players[1] = "AI Player"
             humanStartsFirst = str(input("Will human start first? Type Y or N: "))
-            if humanStartsFirst == "Y":
+            if humanStartsFirst == "Y" or humanStartsFirst == "y":
                 self.players[0] = HumanPlayer(self.playerNames[0], 'x')
-                self.players[1] = AIPlayer(self.playerNames[1], 'o', heuristic, max_depth)
+                self.players[1] = AIPlayer("computer", 'o', heuristic, max_depth)
             else:
-                self.players[0] = AIPlayer(self.playerNames[0], 'x', heuristic, max_depth)
+                self.players[0] = AIPlayer("computer", 'x', heuristic, max_depth)
                 self.players[1] = HumanPlayer(self.playerNames[1], 'o')
 
         elif gameTypeChoice == 3:
             self.players[0] = "AI Player 1"
             self.players[1] = "AI Player 2"
             difficulty = int(input("Please enter a iq level for the first AI. Type 1 , 2 or 3: "))
-            if difficulty != 1 or difficulty != 3 or difficulty != 3:
-                difficulty1 = int(input("Please type a valid iq level. Type 1 , 2 or 3: "))
-            difficulty = int(input("Please enter a iq level for the first AI. Type 1 , 2 or 3: "))
-            if difficulty != 1 or difficulty != 3 or difficulty != 3:
+            if difficulty != 1 and difficulty != 3 and difficulty != 3:
+                difficulty = int(input("Please type a valid iq level. Type 1 , 2 or 3: "))
+            difficulty = int(input("Please enter a iq level for the second AI. Type 1 , 2 or 3: "))
+            if difficulty != 1 and difficulty != 3 and difficulty != 3:
                 difficulty2 = int(input("Please type a valid iq level. Type 1 , 2 or 3: "))
-            self.players[0] = AIPlayer(self.playerNames[0], 'x', difficulty1)
+            self.players[0] = AIPlayer(self.playerNames[0], 'x', difficulty)
             self.players[1] = AIPlayer(self.playerNames[1], 'o', difficulty2)
         else:
             gameTypeChoice = str(input("Please type a valid input! 1, 2 or 3: "))
@@ -83,10 +83,8 @@ class Game(object):
                       [' ', ' ', ' ', ' ', ' ', ' ', ' '],
                       [' ', ' ', ' ', ' ', ' ', ' ', ' '],
                       [' ', ' ', ' ', ' ', ' ', ' ', ' '],
-                      [' ', ' ', ' ', ' ', ' ', ' ', ' ']
-
-
-                      ]
+                      [' ', ' ', ' ', ' ', ' ', ' ', ' '],
+                      [' ', ' ', ' ', ' ', ' ', ' ', ' ']]
 
     # Check if there exist a horizontal four starting from x,y
     def checkHorizontalFour(self, x, y):
