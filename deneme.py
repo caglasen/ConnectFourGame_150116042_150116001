@@ -6,11 +6,15 @@ for i in range(6):
     for j in range(7):
         board[i].append(' ')
 
+a = AI(board, 1, "x", 4)
 
-a = AI(board, 1, "x")
+state = [
+    [" ", "x", "x", " ", " ", " ", " "],
+    [" ", " ", "o", "x", " ", " ", " "],
+    [" ", " ", "x", "o", " ", " ", " "],
+    [" ", " ", " ", " ", "o", " ", " "],
+    [" ", " ", " ", " ", " ", " ", " "],
+    [" ", " ", " ", " ", " ", " ", " "],
+]
 
-
-for i in a.get_possible_moves(a.move(a.board, 2, "o")):
-    for j in i:
-        print(j)
-    print("\n")
+print(a.check_all(2, state, "o"))

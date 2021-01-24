@@ -4,6 +4,7 @@
 # Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
 
 import time
+from ai import AI
 
 
 class Game(object):
@@ -30,17 +31,19 @@ class Game(object):
             self.players[0] = HumanPlayer(self.playerNames[0], 'x')
             self.players[1] = HumanPlayer(self.playerNames[1], 'o')
         elif gameTypeChoice == 2:
-            difficulty = int(input("Please enter difficulty level. Type 1 , 2 or 3: "))
-            if difficulty != 1 or difficulty != 3 or difficulty != 3:
-                difficulty = int(input("Please type a valid difficulty level. Type 1 , 2 or 3: "))
+            heuristic = int(input("Please enter the heuristic function for AI. Type 1 for h1 2 for h2 3 for h3"))
+            if not heuristic in [1, 2, 3]:
+                heuristic = int(input("Please type a heuristic. Type 1 , 2 or 3: "))
+            max_depth = int(input("Please enter the max depth for AI. Type 1, 2, 3 ..."))
+
             self.players[0] = str(input("What is the name of human player?"))
             self.players[1] = "AI Player"
             humanStartsFirst = str(input("Will human start first? Type Y or N: "))
             if humanStartsFirst == "Y":
                 self.players[0] = HumanPlayer(self.playerNames[0], 'x')
-                self.players[1] = AIPlayer(self.playerNames[1], 'o', difficulty)
+                self.players[1] = AIPlayer(self.playerNames[1], 'o', heuristic, max_depth)
             else:
-                self.players[0] = AIPlayer(self.playerNames[0], 'x', difficulty)
+                self.players[0] = AIPlayer(self.playerNames[0], 'x', heuristic, max_depth)
                 self.players[1] = HumanPlayer(self.playerNames[1], 'o')
 
         elif gameTypeChoice == 3:
@@ -222,8 +225,8 @@ class Game(object):
 
         # If the player is an AI
         if isinstance(currentPlayer, AIPlayer):
-            print()
-            # BURAYA MINIMAXLI Bİ ŞEYLER GELECEK====================
+            playersColumnChoice = currentPlayer.make_a_move(self.board)
+
 
         cellIndex = self.findTheEmptyCellInAColumn(playersColumnChoice)
 
@@ -341,11 +344,16 @@ class AIPlayer(object):
     letter = None
     difficulty = None
 
-    def __init__(self, name, letter, difficulty):
-        self.difficulty = difficulty
+    def __init__(self, name, letter, heuristic, max_depth):
+        self.heuristic = heuristic
+        self.max_depth = max_depth
         self.letter = letter
         self.name = name
 
+    def make_a_move(self, board):  # this function returns a board state that ai player made the best move
+        ai = AI(board, self.heuristic, self.letter, self.max_depth)
+        best_move = ai.get_best_move()
+        return best_move
 
 def main():
     game = Game()
