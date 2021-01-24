@@ -17,6 +17,7 @@ state = [
     [" ", " ", " ", " ", " ", " ", " "],
 ]
 
-ai = AI(state, 1, "x", 4)
+ai = AI(state, 2, "x", 4)
 
-print(a.is_game_over(state))
+print(a.h2(state))
+ai.get_best_move()

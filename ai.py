@@ -1,6 +1,11 @@
 import math
 import random
 
+# define variables for h1 h2 h3
+H1 = 1
+H2 = 2
+H3 = 3
+
 class AI:
     board = None
     colors = ["x", "o"]
@@ -35,7 +40,12 @@ class AI:
         possibleMoves = self.get_possible_moves(state, player)
 
         if depth == 0 or len(possibleMoves) == 0 or self.is_game_over(state):
-            return self.h1(state)
+            if self.heuristic is H1:
+                return self.h1(state)
+            elif self.heuristic is H2:
+                return self.h2(state)
+            else:
+                raise Exception("no heuristic h" + str(self.heuristic))
         if is_max_player:
             value = -math.inf
             for child in possibleMoves:
@@ -103,10 +113,10 @@ class AI:
         else:
             return 0
 
-    def vertical_check(self, row, col, state, check_number):
+    def vertical_check(self, x, y, state, check_number):
         consecutiveCount = 0
-        for i in range(row, 6):
-            if state[i][col].lower() == state[row][col].lower():
+        for i in range(x, 6):
+            if state[i][y].lower() == state[x][y].lower():
                 consecutiveCount += 1
             else:
                 break
@@ -153,13 +163,89 @@ class AI:
     def h1(self, state):  # first heuristic value is calculated as 4 in a row * inf
         # + 3 in a row * 999 + 2 in a row * 99 - opponent  in a row * 9999 - 2 in a row * 99
         value = 0
-        value = value + self.check_all(3, state, self.player) * 999  # add 999 for player's 3 in a row
-        value = value + self.check_all(2, state, self.player) * 9  # add 99 for player's 2 in a row
-        value = value - self.check_all(3, state, self.opponent) * 9999  # subtract 9999 for opponent's 3 in a row
-        value = value - self.check_all(2, state, self.opponent) * 9
+        value += self.check_all(3, state, self.player) * 999  # add 999 for player's 3 in a row
+        value += self.check_all(2, state, self.player) * 9  # add 99 for player's 2 in a row
+        value -= self.check_all(3, state, self.opponent) * 9999  # subtract 9999 for opponent's 3 in a row
+        value -= self.check_all(2, state, self.opponent) * 9
         # subtract 99 for opponent's 2 in row
 
         if self.check_all(4, state, self.player):
             value = math.inf  # if player wins the game in this state then value is infinite
 
         return value
+
+    def h2(self, state):  # the heuristic function is number of possible 4 s in a row for the player
+        value = 0
+        for i in range(6):
+            for j in range(7):
+                if (state[i][j] == self.player):
+                    value += self.count_possible_horizontal(i, j, state)
+                    value += self.count_vertical_possible(i, j, state)
+                    value += self.count_diagonal_possible(i, j, state)
+        if self.check_all(3, state, self.opponent):
+            value -= 9999
+
+        if self.check_all(4,state,self.player):
+            value = math.inf
+
+        return value
+
+    def count_possible_horizontal(self, x, y, state):
+        consecutive_count = 0
+        for i in range(y, 7):
+            if state[x][i].lower() == self.player or state[x][i].lower() == " ":
+                consecutive_count += 1
+            else:
+                break
+
+        if consecutive_count >= 4:
+            return 1
+        else:
+            return 0
+
+    def count_vertical_possible(self, x, y, state):
+        consecutiveCount = 0
+        for i in range(x, 6):
+            if state[i][y].lower() == self.player or state[i][y].lower() == " ":
+                consecutiveCount += 1
+            else:
+                break
+
+        if consecutiveCount >= 4:
+            return 1
+        else:
+            return 0
+
+    def count_diagonal_possible(self, x, y, state):
+        total = 0
+        # check for diagonals with positive slope
+        consecutiveCount = 0
+        j = y
+        for i in range(x, 6):
+            if j > 6:
+                break
+            elif state[i][j].lower() == self.player or state[i][j].lower() == " ":
+                consecutiveCount += 1
+            else:
+                break
+            j += 1  # increment column when row is incremented
+
+        if consecutiveCount >= 4:
+            total += 1
+
+        # check for diagonals with negative slope
+        consecutiveCount = 0
+        j = y
+        for i in range(x, -1, -1):
+            if j > 6:
+                break
+            elif state[i][j].lower() == self.player or state[i][j].lower() == " ":
+                consecutiveCount += 1
+            else:
+                break
+            j += 1  # increment column when row is incremented
+
+        if consecutiveCount >= 4:
+            total += 1
+
+        return total
