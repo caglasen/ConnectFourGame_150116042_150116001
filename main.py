@@ -280,11 +280,11 @@ class Game(object):
         if foursRowIndex == -1 and foursColumnIndex == -1:
             self.showState()
         else:
-            self.showTheWinnerFourState(foursRowIndex, foursColumnIndex, a, b, c)
+            self.showTheWinnerFourState(foursRowIndex, foursColumnIndex)
 
-        return foursRowIndex, foursColumnIndex
+        return
 
-    def showTheWinnerFourState(self, row, col, vert, horiz, diagon):
+    def showTheWinnerFourState(self, row, col):
 
         letter = self.board[row][col]
 
