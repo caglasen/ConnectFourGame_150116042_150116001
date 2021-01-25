@@ -85,7 +85,6 @@ class Game(object):
                       [' ', ' ', ' ', ' ', ' ', ' ', ' '],
                       [' ', ' ', ' ', ' ', ' ', ' ', ' ']
 
-
                       ]
 
     # Check if there exist a horizontal four starting from x,y
@@ -141,16 +140,15 @@ class Game(object):
 
         j = y
         for i in range(x, self.m):
-            #for j in range(y, self.n):
-            if(j<self.n):
-                if (self.board[i][j] == character):
+            # for j in range(y, self.n):
+            if j < self.n:
+                if self.board[i][j] == character:
                     count += 1
                 else:
                     break
                 j += 1
             else:
                 break
-
 
         if count >= 4:
             existsDiagFour = True
@@ -165,9 +163,9 @@ class Game(object):
         count = 0
         j = y
         for i in range(x, -1, -1):
-            #for j in range(y, self.n):
-            if (j < self.n):
-                if (self.board[i][j] == character):
+            # for j in range(y, self.n):
+            if j < self.n:
+                if self.board[i][j] == character:
                     count += 1
                 else:
                     break
@@ -234,7 +232,6 @@ class Game(object):
         # If the player is an AI
         if isinstance(currentPlayer, AIPlayer):
             playersColumnChoice = currentPlayer.make_a_move(self.board)
-
 
         cellIndex = self.findTheEmptyCellInAColumn(playersColumnChoice)
 
@@ -362,6 +359,7 @@ class AIPlayer(object):
         ai = AI(board, self.heuristic, self.letter, self.max_depth)
         best_move = ai.get_best_move()
         return best_move
+
 
 def main():
     game = Game()

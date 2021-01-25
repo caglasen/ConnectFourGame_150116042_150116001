@@ -19,5 +19,6 @@ state = [
 
 ai = AI(state, 2, "x", 4)
 
-print(a.h2(state))
-ai.get_best_move()
+print(random.randrange(8))
+
+
