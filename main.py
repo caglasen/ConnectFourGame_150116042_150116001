@@ -381,11 +381,8 @@ class AIPlayer(object):
 def main():
     game = Game()
     game.initializeBoard()
-    # game.arbitrary()
     game.showState()
 
-    player1 = game.players[0]
-    player2 = game.players[1]
 
     gameFinished = False
 
