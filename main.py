@@ -295,6 +295,8 @@ class Game(object):
         foursCoordinates[0][0] = row
         foursCoordinates[0][1] = col
 
+        diagonalCheck, diagDegree = self.checkDiagonalFour(row, col)
+
         if self.checkVerticalFour(row, col):
             for i in range(1, 4):
                 foursCoordinates[i][0] = row + 1
@@ -307,12 +309,19 @@ class Game(object):
                 foursCoordinates[i][1] = col + 1
                 col += 1
 
-        elif self.checkDiagonalFour(row, col):
-            for i in range(1, 4):
-                foursCoordinates[i][0] = row + 1
-                foursCoordinates[i][1] = col + 1
-                row += 1
-                col += 1
+        elif diagonalCheck:
+            if diagDegree==45:
+                for i in range(1, 4):
+                    foursCoordinates[i][0] = row + 1
+                    foursCoordinates[i][1] = col + 1
+                    row += 1
+                    col += 1
+            elif diagDegree==135:
+                for i in range(1, 4):
+                    foursCoordinates[i][0] = row - 1
+                    foursCoordinates[i][1] = col + 1
+                    row -= 1
+                    col += 1
 
 
         for i in range(6):
