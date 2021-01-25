@@ -33,7 +33,7 @@ class Game(object):
             self.players[1] = HumanPlayer(self.playerNames[1], 'o')
         elif gameTypeChoice == 2:
             heuristic = int(input("Please enter the heuristic function for AI. Type 1 for h1 2 for h2 3 for h3"))
-            if not heuristic in [1, 2, 3]:
+            while heuristic not in [1, 2, 3]:
                 heuristic = int(input("Please type a heuristic. Type 1 , 2 or 3: "))
             max_depth = int(input("Please enter the max depth for AI. Type 1, 2, 3 ..."))
 
@@ -50,14 +50,19 @@ class Game(object):
         elif gameTypeChoice == 3:
             self.players[0] = "AI Player 1"
             self.players[1] = "AI Player 2"
-            difficulty = int(input("Please enter a iq level for the first AI. Type 1 , 2 or 3: "))
-            if difficulty != 1 and difficulty != 3 and difficulty != 3:
-                difficulty = int(input("Please type a valid iq level. Type 1 , 2 or 3: "))
-            difficulty = int(input("Please enter a iq level for the second AI. Type 1 , 2 or 3: "))
-            if difficulty != 1 and difficulty != 3 and difficulty != 3:
-                difficulty2 = int(input("Please type a valid iq level. Type 1 , 2 or 3: "))
-            self.players[0] = AIPlayer(self.playerNames[0], 'x', difficulty)
-            self.players[1] = AIPlayer(self.playerNames[1], 'o', difficulty2)
+            heuristic = int(
+                input("Please enter the heuristic function for the first AI. Type 1 for h1 2 for h2 3 for h3"))
+            while heuristic not in [1, 2, 3]:
+                heuristic = int(input("Please type a heuristic. Type 1 , 2 or 3: "))
+            max_depth = int(input("Please enter the max depth for AI. Type 1, 2, 3 ..."))
+            self.players[0] = AIPlayer("computer", 'x', heuristic, max_depth)
+
+            heuristic = int(
+                input("Please enter the heuristic function for the second AI. Type 1 for h1 2 for h2 3 for h3"))
+            while heuristic not in [1, 2, 3]:
+                heuristic = int(input("Please type a heuristic. Type 1 , 2 or 3: "))
+            max_depth = int(input("Please enter the max depth for AI. Type 1, 2, 3 ..."))
+            self.players[1] = AIPlayer("computer", 'o', heuristic, max_depth)
         else:
             gameTypeChoice = str(input("Please type a valid input! 1, 2 or 3: "))
 
@@ -140,8 +145,8 @@ class Game(object):
 
         j = y
         for i in range(x, self.m):
-            #for j in range(y, self.n):
-            if(j<self.n):
+            # for j in range(y, self.n):
+            if (j < self.n):
                 if (self.board[i][j] == character):
                     count += 1
                 else:
@@ -149,7 +154,6 @@ class Game(object):
                 j += 1
             else:
                 break
-
 
         if count >= 4:
             existsDiagFour = True
@@ -164,7 +168,7 @@ class Game(object):
         count = 0
         j = y
         for i in range(x, -1, -1):
-            #for j in range(y, self.n):
+            # for j in range(y, self.n):
             if (j < self.n):
                 if (self.board[i][j] == character):
                     count += 1
@@ -233,7 +237,6 @@ class Game(object):
         # If the player is an AI
         if isinstance(currentPlayer, AIPlayer):
             playersColumnChoice = currentPlayer.make_a_move(self.board)
-
 
         cellIndex = self.findTheEmptyCellInAColumn(playersColumnChoice)
 
@@ -366,6 +369,7 @@ class AIPlayer(object):
         ai = AI(board, self.heuristic, self.letter, self.max_depth)
         best_move = ai.get_best_move()
         return best_move
+
 
 def main():
     game = Game()

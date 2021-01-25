@@ -6,6 +6,17 @@ H1 = 1
 H2 = 2
 H3 = 3
 
+H3_TABLE = [  # this is a evaluation table for heuristic 3, numbers corresponds values that from that cell how many
+    # possible moves can be achieved
+    [3, 4, 5, 7, 5, 4, 3],
+    [4, 6, 8, 10, 8, 6, 4],
+    [5, 8, 11, 13, 11, 8, 5],
+    [5, 8, 11, 13, 11, 8, 5],
+    [4, 6, 8, 10, 8, 6, 4],
+    [3, 4, 5, 7, 5, 4, 3],
+]
+
+
 class AI:
     board = None
     colors = ["x", "o"]
@@ -44,6 +55,8 @@ class AI:
                 return self.h1(state)
             elif self.heuristic is H2:
                 return self.h2(state)
+            elif self.heuristic is H3:
+                return self.h3(state)
             else:
                 raise Exception("no heuristic h" + str(self.heuristic))
         if is_max_player:
@@ -178,14 +191,14 @@ class AI:
         value = 0
         for i in range(6):
             for j in range(7):
-                if (state[i][j] == self.player):
+                if state[i][j] == self.player:
                     value += self.count_possible_horizontal(i, j, state)
                     value += self.count_vertical_possible(i, j, state)
                     value += self.count_diagonal_possible(i, j, state)
         if self.check_all(3, state, self.opponent):
             value -= 9999
 
-        if self.check_all(4,state,self.player):
+        if self.check_all(4, state, self.player):
             value = math.inf
 
         return value
@@ -249,3 +262,20 @@ class AI:
             total += 1
 
         return total
+
+    def h3(self, state):  # h3 is for every tile i have on the board, sum of their corresponding board position value
+        if self.check_all(4, state, self.opponent) >= 1:  # plus for every 3 in a row for my self * 10
+            return -999999           # if win condition value is infinite and if it is lose condition value is 9999
+        elif self.check_all(4, state, self.player) >= 1:
+            return math.inf
+
+        value = 0
+
+        for i in range(6):
+            for j in range(7):
+                if state[i][j] == self.player:
+                    value += H3_TABLE[i][j]
+                elif state[i][j] == self.opponent:
+                    value -= H3_TABLE[i][j]
+        value += self.check_all(3, state, self.player) * 10
+        return value
