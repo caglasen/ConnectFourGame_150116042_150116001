@@ -1,4 +1,5 @@
-# This is a sample Python script.
+# 150116042 Celil Mete
+# 150116001 Çağla Şen
 
 # Press Shift+F10 to execute it or replace it with your code.
 # Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
@@ -310,11 +311,16 @@ class Game(object):
                 row += 1
                 col += 1
 
+
         for i in range(6):
             for j in range(7):
-                for k in range(4):
-                    if i != foursCoordinates[k][0] and j != foursCoordinates[k][1]:
-                        self.board[i][j] = ' '
+                a=(i == foursCoordinates[0][0] and j == foursCoordinates[0][1])
+                b=(i == foursCoordinates[1][0] and j == foursCoordinates[1][1])
+                c=(i == foursCoordinates[2][0] and j == foursCoordinates[2][1])
+                d=(i == foursCoordinates[3][0] and j == foursCoordinates[3][1])
+                if  not (a or b or c or d) :
+                    self.board[i][j] = ' '
+
         self.showState()
         print("The winner is ", self.gameWinner.name, " with the letter ", self.gameWinner.letter)
         return
