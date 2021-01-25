@@ -55,14 +55,14 @@ class Game(object):
             while heuristic not in [1, 2, 3]:
                 heuristic = int(input("Please type a heuristic. Type 1 , 2 or 3: "))
             max_depth = int(input("Please enter the max depth for AI. Type 1, 2, 3 ..."))
-            self.players[0] = AIPlayer("computer", 'x', heuristic, max_depth)
+            self.players[0] = AIPlayer("ai player 1", 'x', heuristic, max_depth)
 
             heuristic = int(
                 input("Please enter the heuristic function for the second AI. Type 1 for h1 2 for h2 3 for h3"))
             while heuristic not in [1, 2, 3]:
                 heuristic = int(input("Please type a heuristic. Type 1 , 2 or 3: "))
             max_depth = int(input("Please enter the max depth for AI. Type 1, 2, 3 ..."))
-            self.players[1] = AIPlayer("computer", 'o', heuristic, max_depth)
+            self.players[1] = AIPlayer("ai player 2", 'o', heuristic, max_depth)
         else:
             gameTypeChoice = str(input("Please type a valid input! 1, 2 or 3: "))
 

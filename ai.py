@@ -19,7 +19,6 @@ H3_TABLE = [  # this is a evaluation table for heuristic 3, numbers corresponds 
 
 class AI:
     board = None
-    colors = ["x", "o"]
 
     def __init__(self, board, heuristic, player, depth):
         self.board = [x[:] for x in board]
@@ -196,7 +195,10 @@ class AI:
                     value += self.count_vertical_possible(i, j, state)
                     value += self.count_diagonal_possible(i, j, state)
         if self.check_all(3, state, self.opponent):
-            value -= 9999
+            value -= 999
+
+        if self.check_all(4, state, self.opponent):
+            value = -9999999
 
         if self.check_all(4, state, self.player):
             value = math.inf
