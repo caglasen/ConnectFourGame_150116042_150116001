@@ -66,23 +66,21 @@ class Game(object):
         else:
             gameTypeChoice = str(input("Please type a valid input! 1, 2 or 3: "))
 
-        """
-        time.sleep(1)
+
+        time.sleep(0.5)
         print("Game is starting...")
-        time.sleep(1)
+        time.sleep(0.5)
         print("3")
-        time.sleep(1)
+        time.sleep(0.5)
         print("2")
-        time.sleep(1)
+        time.sleep(0.5)
         print("1")
-        time.sleep(1)
-        """
+        time.sleep(0.5)
+
 
     def initializeBoard(self):
 
         self.playerTurn = self.players[0]
-
-        # a = [[0 for x in range(n)] for x in range(m)]
 
         self.board = [[' ', ' ', ' ', ' ', ' ', ' ', ' '],
                       [' ', ' ', ' ', ' ', ' ', ' ', ' '],
@@ -219,7 +217,7 @@ class Game(object):
     def makeAMove(self):
         currentPlayer = self.playerTurn
 
-        if self.checkGameIsOverWithDrawn():
+        if self.checkGameIsOverWithDraw():
             print("Move is not valid. Error: Game ended with a drawn")
             return
 
@@ -338,7 +336,7 @@ class Game(object):
         return
 
     # If there is a drawn(if the board is already full) return true
-    def checkGameIsOverWithDrawn(self):
+    def checkGameIsOverWithDraw(self):
         if self.round > self.m * self.n:
             return True
         else:
